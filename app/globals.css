@@ -1,0 +1,131 @@
+@import "tailwindcss";
+
+/* Färger som CSS-variabler, så att mörkt läge bara byter värden här. */
+:root {
+  --paper: #f5f2eb;
+  --paper-raised: #fbf9f4;
+  --ink: #1c1f1d;
+  --muted: #565b57;
+  --line: #d8d2c4;
+  --accent: #a8401c;
+  --accent-ink: #ffffff;
+  --signal: #2f7a4f;
+  --code-bg: #1f2321;
+  --code-ink: #e9e5dc;
+  --code-comment: #9aa39c;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --paper: #141615;
+    --paper-raised: #1b1e1c;
+    --ink: #ece8df;
+    --muted: #a5aaa5;
+    --line: #333834;
+    --accent: #ec8a62;
+    --accent-ink: #141615;
+    --signal: #6cc493;
+    --code-bg: #0d0f0e;
+    --code-ink: #e9e5dc;
+    --code-comment: #8b938c;
+  }
+}
+
+/* Mörk yta i ljust läge (kontakt och sidfot). Byter variablerna lokalt. */
+.scheme-dark {
+  --paper: #1c1f1d;
+  --paper-raised: #232724;
+  --ink: #f5f2eb;
+  --muted: #b3b8b0;
+  --line: #3a3f3b;
+  --accent: #ec8a62;
+  --accent-ink: #141615;
+}
+
+@media (prefers-color-scheme: dark) {
+  .scheme-dark {
+    --paper: #0c0e0d;
+  }
+}
+
+@theme inline {
+  --color-paper: var(--paper);
+  --color-paper-raised: var(--paper-raised);
+  --color-ink: var(--ink);
+  --color-muted: var(--muted);
+  --color-line: var(--line);
+  --color-accent: var(--accent);
+  --color-accent-ink: var(--accent-ink);
+  --color-signal: var(--signal);
+  --color-code-bg: var(--code-bg);
+  --color-code-ink: var(--code-ink);
+  --color-code-comment: var(--code-comment);
+
+  --font-sans: var(--font-plex-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-plex-mono), ui-monospace, monospace;
+  --font-display: var(--font-fraunces), Georgia, serif;
+}
+
+html {
+  scroll-padding-top: 5rem;
+}
+
+body {
+  background: var(--paper);
+  color: var(--ink);
+}
+
+::selection {
+  background: var(--accent);
+  color: var(--accent-ink);
+}
+
+/* Tydlig fokusmarkering för tangentbordsnavigering */
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+/* Frimärke: vit ram med "perforerad" kant av små halvcirklar */
+.stamp {
+  --r: 4px;
+  padding: calc(2.5 * var(--r));
+  background:
+    radial-gradient(var(--r), #0000 98%, #fdfbf6) round calc(-1.5 * var(--r)) calc(-1.5 * var(--r)) /
+      calc(3 * var(--r)) calc(3 * var(--r)),
+    linear-gradient(#fdfbf6 0 0) no-repeat 50% / calc(100% - 3 * var(--r)) calc(100% - 3 * var(--r));
+  filter: drop-shadow(0 1px 1.5px rgb(0 0 0 / 0.25));
+}
+
+/* Animationer bara för den som inte har valt reducerad rörelse */
+@media screen and (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  .fade-up {
+    animation: fade-up 0.7s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  }
+
+  /* Sektioner glider in när de scrollas fram (i webbläsare som stöder det) */
+  @supports (animation-timeline: view()) {
+    .reveal {
+      animation: fade-up linear both;
+      animation-timeline: view();
+      /* Klar efter 160px scroll, oavsett hur högt elementet är */
+      animation-range: entry 0px entry 160px;
+    }
+  }
+}
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
