@@ -64,27 +64,26 @@ export const projects: Project[] = [
   {
     title: "StayFinder",
     subtitle: "Bokningstjänst för boenden",
-    status: "Pågående skolprojekt",
+    status: "Skolprojekt",
     description:
-      "Ett skolprojekt på Nackademin där jag bygger en tjänst för att hitta och boka boenden. Målet är att koppla ihop frontend, API, databas och inloggning. Hittills har jag byggt API:t och databasen.",
+      "Ett skolprojekt på Nackademin: en tjänst där man kan hitta, lägga upp och boka boenden. Jag har byggt frontend, API och databas och kopplat ihop dem med inloggning.",
     done: {
-      heading: "Klart hittills",
+      heading: "Det här fungerar",
       items: [
-        "API byggt med Hono och TypeScript",
-        "Validering med Zod och tydliga felkoder",
-        "Inloggning med Supabase Auth, där sessionen sparas i en httpOnly-cookie",
+        "Lista över boenden med filter på plats, maxpris och antal gäster, och sortering på pris",
+        "Konto, inloggning och utloggning med Supabase Auth, där sessionen sparas i en httpOnly-cookie",
+        "Inloggade kan lägga upp egna boenden och boka andras",
+        "Bokningsformulär som visar antal nätter och totalpris innan man bokar",
+        "Se, ändra, avboka och ta bort sina bokningar",
         "Behörighet både i API:t och i databasen med Row Level Security",
-        "Filtrering och sortering av boenden i backend",
-        "Bokningar där databasen stoppar dubbelbokningar och räknar ut priset",
+        "Databasen stoppar dubbelbokningar och räknar själv ut priset",
       ],
     },
     planned: {
-      heading: "Planerat",
-      items: [
-        "Frontend i Next.js med inloggning, lista över boenden, filter och bokningsformulär",
-      ],
+      heading: "Nästa steg",
+      items: ["Förbättra designen och detaljerna i gränssnittet"],
     },
-    tech: ["TypeScript", "Hono", "Zod", "Supabase", "PostgreSQL"],
+    tech: ["Next.js", "React", "TypeScript", "Tailwind CSS", "Hono", "Zod", "Supabase", "PostgreSQL"],
     links: [{ label: "Koden på GitHub", href: "https://github.com/Regron95/stayfinder" }],
     media: {
       kind: "code",
