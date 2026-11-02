@@ -47,24 +47,14 @@ Legg PDF-en i `public/cv.pdf` (nøyaktig det navnet). Knappen «Ladda ner CV» d
 ## Publisere på Vercel
 
 Siden ligger på **https://portofolio-regron.vercel.app** (Vercel-prosjekt `portofolio-rr`).
-Mappen er allerede koblet til prosjektet (`.vercel/`). For å publisere endringer:
+Koden ligger på https://github.com/Regron95/portofolio-rr, som er koblet til Vercel.
+Hver `git push` til `main` publiseres automatisk:
 
 ```bash
-npm run build                  # sjekk at alt bygger
-npx vercel deploy --prod       # publiser
-```
-
-### Alternativ: automatisk publisering via GitHub
-
-1. Lag et nytt repo på GitHub og push koden (se kommandoene under).
-2. Gå til vercel.com → prosjektet `portofolio-rr` → **Settings → Git** → koble til repoet.
-3. Etter det publiseres hver `git push` til `main` automatisk.
-
-```bash
-git init
+npm run build                        # sjekk at alt bygger
 git add .
-git commit -m "Første versjon av porteføljen"
-git branch -M main
-git remote add origin https://github.com/Regron95/portfolio.git
-git push -u origin main
+git commit -m "Beskriv endringen"
+git push
 ```
+
+Etter et minutt eller to er endringen live. Status ser du på vercel.com under prosjektet.
