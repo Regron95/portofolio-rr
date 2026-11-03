@@ -1,5 +1,8 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
   <rect width="64" height="64" rx="14" fill="#1c1f1d"/>
-  <text x="32" y="43" text-anchor="middle" font-family="Georgia, serif" font-size="30" fill="#f5f2eb">RR</text>
-  <circle cx="51" cy="14" r="5" fill="#ec8a62"/>
+  <g font-family="Georgia, 'Times New Roman', serif" font-size="40" font-weight="bold" fill="#f5f2eb">
+    <!-- Speglad R: ryggen hamnar vid x=32, mitt i ikonen -->
+    <text x="-32.5" y="46" transform="scale(-1 1)">R</text>
+    <text x="31.5" y="46">R</text>
+  </g>
 </svg>

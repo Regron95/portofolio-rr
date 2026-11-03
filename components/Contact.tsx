@@ -1,15 +1,17 @@
-import { contact, profile } from "@/content/site";
+import { texts } from "@/content";
+import { profile } from "@/content/profile";
+import type { Lang } from "@/content/types";
 import { SectionHeading } from "./SectionHeading";
 
-export function Contact({ cvUrl }: { cvUrl: string | null }) {
+export function Contact({ lang, cvUrl }: { lang: Lang; cvUrl: string | null }) {
+  const t = texts[lang].contact;
+
   return (
-    <section aria-labelledby="kontakt" className="scheme-dark bg-paper text-ink">
+    <section aria-labelledby="contact" className="scheme-dark bg-paper text-ink">
       <div className="mx-auto max-w-6xl px-4 py-20 sm:px-6 md:py-28">
-        <SectionHeading id="kontakt" number="04" title="Kontakt" />
+        <SectionHeading id="contact" number="04" title={t.heading} />
         <div className="reveal">
-          <p className="max-w-2xl text-lg leading-relaxed text-muted">
-            {contact.intro}
-          </p>
+          <p className="max-w-2xl text-lg leading-relaxed text-muted">{t.intro}</p>
 
           <a
             href={`mailto:${profile.email}`}
@@ -27,7 +29,7 @@ export function Contact({ cvUrl }: { cvUrl: string | null }) {
             {cvUrl && (
               <li>
                 <a href={cvUrl} download className="underline-offset-4 hover:underline">
-                  Ladda ner CV (PDF) ↓
+                  {t.downloadCv} ↓
                 </a>
               </li>
             )}

@@ -1,56 +1,64 @@
 import Image from "next/image";
+import { texts } from "@/content";
+import { profile } from "@/content/profile";
 import { projects, type Project } from "@/content/projects";
-import { profile } from "@/content/site";
+import type { Lang } from "@/content/types";
 import { SectionHeading } from "./SectionHeading";
 
-export function Projects() {
+export function Projects({ lang }: { lang: Lang }) {
+  const t = texts[lang].projects;
+  const [before, linkText, after] = t.moreOnGithub;
+
   return (
-    <section aria-labelledby="projekt" className="mx-auto max-w-6xl px-4 py-20 sm:px-6 md:py-28">
-      <SectionHeading id="projekt" number="01" title="Projekt" />
+    <section aria-labelledby="projects" className="mx-auto max-w-6xl px-4 py-20 sm:px-6 md:py-28">
+      <SectionHeading id="projects" number="01" title={t.heading} />
       <div className="space-y-24 md:space-y-32">
         {projects.map((project, index) => (
-          <ProjectEntry key={project.title} project={project} flip={index % 2 === 1} />
+          <ProjectEntry key={project.title} project={project} lang={lang} flip={index % 2 === 1} />
         ))}
       </div>
       <p className="mt-20 text-muted">
-        Fler skolprojekt finns på{" "}
+        {before}{" "}
         <a href={profile.github} className="text-ink underline decoration-accent underline-offset-4 hover:decoration-2">
-          min GitHub
+          {linkText}
         </a>
-        .
+        {after}
       </p>
     </section>
   );
 }
 
-function ProjectEntry({ project, flip }: { project: Project; flip: boolean }) {
+function ProjectEntry({ project, lang, flip }: { project: Project; lang: Lang; flip: boolean }) {
+  const t = texts[lang].projects;
+  const text = project.text[lang];
+
   return (
     <article className="reveal grid gap-10 lg:grid-cols-2 lg:items-start lg:gap-16">
       {/* min-w-0 hindrar breda kodrader från att trycka ut kolumnen */}
       <div className={`min-w-0 ${flip ? "lg:order-2" : ""}`}>
-        <ProjectMedia media={project.media} />
+        <ProjectMedia media={project.media} lang={lang} />
       </div>
 
       <div className="min-w-0">
-        <p className="font-mono text-xs tracking-wide text-muted uppercase">{project.status}</p>
+        <p className="font-mono text-xs tracking-wide text-muted uppercase">{text.status}</p>
         <h3 className="mt-3 font-display text-3xl font-medium tracking-tight md:text-4xl">{project.title}</h3>
-        <p className="mt-1 text-lg text-muted">{project.subtitle}</p>
-        <p className="mt-6 leading-relaxed">{project.description}</p>
+        <p className="mt-1 text-lg text-muted">{text.subtitle}</p>
+        <p className="mt-6 leading-relaxed">{text.description}</p>
 
-        <CheckList heading={project.done.heading} items={project.done.items} />
-        {project.planned && <CheckList heading={project.planned.heading} items={project.planned.items} planned />}
+        <CheckList heading={text.done.heading} items={text.done.items} />
+        {text.planned && <CheckList heading={text.planned.heading} items={text.planned.items} planned />}
 
-        {project.role && (
+        {text.role && (
           <p className="mt-6 border-l-2 border-accent pl-4 leading-relaxed text-muted">
-            <span className="font-medium text-ink">Min roll: </span>
-            {project.role}
+            <span className="font-medium text-ink">{t.roleLabel} </span>
+            {text.role}
           </p>
         )}
 
-        <ul className="mt-8 flex flex-wrap gap-2" aria-label="Tekniker">
-          {project.tech.map((t) => (
-            <li key={t} className="rounded-full border border-line px-3 py-1 font-mono text-xs">
-              {t}
+        <ul className="mt-8 flex flex-wrap gap-2" aria-label={t.techLabel}>
+          {project.tech.map((tech) => (
+            <li key={tech} className="rounded-full border border-line px-3 py-1 font-mono text-xs">
+              {tech}
             </li>
           ))}
         </ul>
@@ -62,7 +70,7 @@ function ProjectEntry({ project, flip }: { project: Project; flip: boolean }) {
               href={link.href}
               className="group inline-flex items-center gap-2 font-medium underline decoration-accent decoration-2 underline-offset-[6px]"
             >
-              {link.label}
+              {link.label[lang]}
               <span aria-hidden="true" className="transition-transform group-hover:translate-x-0.5">
                 ↗
               </span>
@@ -92,7 +100,7 @@ function CheckList({ heading, items, planned = false }: { heading: string; items
   );
 }
 
-function ProjectMedia({ media }: { media: Project["media"] }) {
+function ProjectMedia({ media, lang }: { media: Project["media"]; lang: Lang }) {
   if (media.kind === "code") {
     return (
       <figure className="overflow-hidden rounded-2xl bg-code-bg text-code-ink">
@@ -100,7 +108,13 @@ function ProjectMedia({ media }: { media: Project["media"] }) {
           <span className="truncate">{media.file}</span>
           <span>{media.language}</span>
         </div>
-        <pre className="overflow-x-auto p-5 font-mono text-[0.8rem] leading-relaxed" tabIndex={0} aria-label={`Kodutdrag ur ${media.file}`}>
+        {/* Koden är alltid på svenska, därför lang="sv" även på den engelska sidan */}
+        <pre
+          className="overflow-x-auto p-5 font-mono text-[0.8rem] leading-relaxed"
+          tabIndex={0}
+          lang="sv"
+          aria-label={media.file}
+        >
           <code>
             {media.code.split("\n").map((line, i) => (
               <span
@@ -113,7 +127,7 @@ function ProjectMedia({ media }: { media: Project["media"] }) {
           </code>
         </pre>
         <figcaption className="border-t border-white/10 px-5 py-3 text-xs text-code-comment">
-          Utdrag ur min kod: databasen själv nekar dubbelbokningar, även om någon går förbi API:t.
+          {media.caption[lang]}
         </figcaption>
       </figure>
     );
@@ -123,7 +137,7 @@ function ProjectMedia({ media }: { media: Project["media"] }) {
     <div className="relative sm:pr-16 sm:pb-10">
       <Image
         src={media.desktop.src}
-        alt={media.desktop.alt}
+        alt={media.desktop.alt[lang]}
         sizes="(min-width: 1024px) 540px, 100vw"
         className="w-full rounded-xl border border-line shadow-sm"
         placeholder="blur"
@@ -132,9 +146,9 @@ function ProjectMedia({ media }: { media: Project["media"] }) {
         <div className="absolute right-0 bottom-0 hidden w-[28%] max-w-40 overflow-hidden rounded-2xl border-4 border-ink shadow-lg sm:block">
           <Image
             src={media.mobile.src}
-            alt={media.mobile.alt}
+            alt={media.mobile.alt[lang]}
             sizes="160px"
-            className="aspect-[9/16] w-full object-cover object-top"
+            className="aspect-9/16 w-full object-cover object-top"
           />
         </div>
       )}

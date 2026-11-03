@@ -14,16 +14,21 @@ npm run build    # sjekk at alt bygger før du publiserer
 
 | Fil | Innhold |
 |---|---|
-| `content/site.ts` | Navn, kontakt, LIA-periode, intro, «Om mig», motto, kompetanse |
-| `content/projects.ts` | Prosjektene (tekst, teknologier, lenker, bilder/kodeutdrag) |
-| `components/` | Én fil per seksjon (Hero, Projects, About, Skills, Contact …) |
-| `app/globals.css` | Farger (lyst og mørkt tema) og animasjoner |
-| `app/layout.tsx` | Skrifttyper, sidetittel og beskrivelse for Google/deling |
+| `content/sv.ts` | All svensk tekst: intro, LIA-periode, «Om mig», motto, kompetanse, kontakt, sidetittel |
+| `content/en.ts` | Den samme teksten på engelsk |
+| `content/projects.ts` | Prosjektene, med svensk og engelsk tekst side om side |
+| `content/profile.ts` | Det som er likt på begge språk: navn, e-post, GitHub, adressen til siden |
+| `content/types.ts` | Strukturen som `sv.ts` og `en.ts` må følge |
+| `components/` | Én fil per seksjon (Hero, Projects, About, Skills, Contact …). `Portfolio.tsx` setter dem sammen |
+| `app/(sv)/` og `app/(en)/en/` | Den svenske siden (`/`) og den engelske (`/en`) |
+| `app/globals.css` | Farger (lyst og mørkt tema), frimerkekanten og animasjoner |
 | `public/projects/` | Prosjektbilder |
 
 ## Endre tekst
 
-Åpne `content/site.ts` eller `content/projects.ts` og endre teksten mellom anførselstegnene. Komponentene trenger du ikke å røre.
+Åpne `content/sv.ts` og `content/en.ts` og endre teksten mellom anførselstegnene. Komponentene trenger du ikke å røre.
+
+Husk å endre **begge** språkene. Legger du til et nytt felt i det ene, må det også inn i det andre og i `content/types.ts`. Ellers stopper `npm run build` med en feilmelding som forteller hva som mangler.
 
 ## Legge til et prosjekt
 
@@ -33,10 +38,11 @@ npm run build    # sjekk at alt bygger før du publiserer
    import mittBilde from "@/public/projects/mitt-bilde.png";
    ```
 3. Legg til et nytt objekt i `projects`-listen. Kopier et eksisterende og endre det.
+   - `text.sv` og `text.en`: beskrivelsen på hvert språk.
    - `done`: det som faktisk fungerer.
    - `planned`: det som ikke er bygget ennå (valgfritt).
    - `media`: enten `kind: "screenshots"` med bilder eller `kind: "code"` med et ekte kodeutdrag.
-   - `links`: bare lenker som fungerer.
+   - `links`: bare lenker som fungerer, med `label: { sv: "…", en: "…" }`.
 
 Rekkefølgen i listen er rekkefølgen på siden. Annethvert prosjekt får bildet på motsatt side automatisk.
 
